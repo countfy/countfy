@@ -1,10 +1,44 @@
 version: "3.8"
 name: countfy
 services:
+
   database:
+    container_name: Countfy-Postgres
+    image: postgres:alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./pg-data:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
+      POSTGRES_DB: countfydb
+    restart: always
+    networks:
+      - webnet
+  
   backend:
+    container_name: Countfy-Backend
+    build:
+      context: ./backend
+    restart: aways
+    volumes:
+      - ./backend:/var/backend
+    ports:
+      - "3000:8080"
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_USER=pguser
+      - DB_PASSWORD=pgpassword
+      - DB_NAME=countfydb
+      - NODE_ENV=development
+    depends_on:
+      - database
+    command: ["node", "dist/index.js"]
+
   frontend:
-    container_name: countfy_frontend
+    container_name: Countfy-Frontend
     build:
       context: ./frontend
     restart: unless-stopped
@@ -12,3 +46,11 @@ services:
       - ./frontend:/var/www/html
     ports:
       - "8002:80"
+    depends_on:
+      - backend
+
+networks:
+  webnet:
+volumes:
+  pg-data:
+
