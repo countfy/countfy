@@ -13,7 +13,7 @@ services:
       POSTGRES_USER: pguser
       POSTGRES_PASSWORD: pgpassword
       POSTGRES_DB: countfydb
-    restart: always
+    restart: unless-stopped
     networks:
       - webnet
   
@@ -21,7 +21,7 @@ services:
     container_name: Countfy-Backend
     build:
       context: ./backend
-    restart: aways
+    restart: unless-stopped
     volumes:
       - ./backend:/var/backend
     ports:
@@ -35,7 +35,9 @@ services:
       - NODE_ENV=development
     depends_on:
       - database
-    command: ["node", "dist/index.js"]
+    networks:
+      - webnet
+    command: ["npm", "run", "start:dev"]
 
   frontend:
     container_name: Countfy-Frontend
