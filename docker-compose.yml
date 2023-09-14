@@ -4,3 +4,11 @@ services:
   database:
   backend:
   frontend:
+    container_name: countfy_frontend
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/var/www/html
+    ports:
+      - "8002:80"
