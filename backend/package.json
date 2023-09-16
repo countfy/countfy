@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Nicolas Vyčas Nery <vycasnicolas@gmail.com>;",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -17,15 +17,25 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
-  },
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -f ./ormconfig-migrations.ts",
+    "migration:generate": "npm run typeorm:cli -- migration:generate -n Api",
+    "migration:run": "npm run typeorm:cli -- migration:run",
+    "migration:revert": "npm run typeorm:cli -- migration:revert",
+    "migration:sync": "npm run typeorm:cli schema:sync",
+    "migration:drop": "npm run typeorm:cli schema:drop"
+},
   "dependencies": {
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.1.11",
+    "@nestjs/typeorm": "^10.0.0",
+    "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
