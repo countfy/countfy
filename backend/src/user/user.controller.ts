@@ -7,11 +7,15 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './users.entity';
-
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('user')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('admin-token'))
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
