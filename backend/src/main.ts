@@ -28,6 +28,8 @@ async function bootstrap() {
   const port = process.env.PORT || '3000';
   const environment =
     process.env.NODE_ENV || ('development' as 'development' | 'production');
+  logger.log(`Environment is ${environment}`);
+  logger.log(`Server is running on http://localhost:${port}`);
   setupSwagger(app, port, environment);
   await app.listen(port);
 }
