@@ -11,11 +11,12 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './users.entity';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 @Controller('user')
 @ApiBearerAuth()
 @UseGuards(AuthGuard('admin-token'))
+@ApiTags('user administration')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -25,7 +26,8 @@ export class UserController {
   }
 
   @Get(':id')
-  async readOne(@Param('id') id: string): Promise<User> {
+  @ApiQuery({ name: 'id', type: String })
+  async readOne(@Query('id') id: string): Promise<User> {
     return await this.userService.readOne(id);
   }
 
@@ -37,21 +39,24 @@ export class UserController {
     return await this.userService.readPage(page, size);
   }
 
-  @Put(':id')
+  @Put()
+  @ApiQuery({ name: 'id', type: String })
   async updateOne(
-    @Param('id') id: string,
+    @Query('id') id: string,
     @Body() user: Partial<User>,
   ): Promise<User> {
     return await this.userService.updateOne(id, user);
   }
 
-  @Delete(':id')
-  async deleteOne(@Param('id') id: string): Promise<void> {
+  @Delete('')
+  @ApiQuery({ name: 'id', type: String })
+  async deleteOne(@Query('id') id: string): Promise<void> {
     return await this.userService.deleteOne(id);
   }
 
-  @Get('email/:email')
-  async readByEmail(@Param('email') email: string): Promise<User> {
+  @Get('email/')
+  @ApiQuery({ name: 'email', type: String })
+  async readByEmail(@Query('email') email: string): Promise<User> {
     return await this.userService.readByEmail(email);
   }
 }

@@ -14,14 +14,12 @@ export class UserService {
   public async createOne(user: Partial<User>): Promise<User> {
     const newUser = new User();
     Object.assign(newUser, user);
-    return await this.userRepository.save(newUser);
+    await newUser.save();
+    return newUser;
   }
 
   public async readOne(id: string): Promise<User> {
-    return await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.id = :id', { id })
-      .getOne();
+    return await this.userRepository.findOneBy({ id });
   }
 
   public async readPage(page: number, size: number): Promise<User[]> {

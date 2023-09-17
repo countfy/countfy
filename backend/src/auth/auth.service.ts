@@ -1,14 +1,6 @@
 import {
-  BadRequestException,
-  ConflictException,
-  ForbiddenException,
-  forwardRef,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  Logger,
-  UnauthorizedException,
+    Injectable,
+    Logger
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -20,14 +12,15 @@ import { SingUpDto } from './dto/sing-up.dto';
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
-  private salt: string;
+  private salt: number;
 
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
-    this.salt = this.configService.get<string>('SALT_ROUNDS');
+    const salt = this.configService.get<string>('SALT_ROUNDS');
+    this.salt = parseInt(salt, 10);
   }
 
   public async validateUser(email: string, pass: string): Promise<boolean> {
