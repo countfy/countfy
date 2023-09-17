@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { SeedModule } from './seed/seed.module';
+import { BcryptModule } from './bcrypt/bcrypt.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SeedModule } from './seed/seed.module';
     AuthModule,
     UserModule,
     SeedModule,
+    BcryptModule,
   ],
   controllers: [AppController],
   providers: [AppService],
