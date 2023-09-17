@@ -15,7 +15,7 @@ const setupSwagger = (
     .setTitle('Countfy API')
     .setDescription('Countfy API description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addBearerAuth()
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
