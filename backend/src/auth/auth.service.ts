@@ -1,32 +1,26 @@
-import {
-    Injectable,
-    Logger
-} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare, hashSync } from 'bcrypt';
+import { BcryptService } from 'src/bcrypt/bcrypt.service';
 import { UserService } from 'src/user/user.service';
 import { SingInDto } from './dto/sing-in.dto';
 import { SingUpDto } from './dto/sing-up.dto';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-
-  private salt: number;
-
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-  ) {
-    const salt = this.configService.get<string>('SALT_ROUNDS');
-    this.salt = parseInt(salt, 10);
-  }
+    private readonly bcryptService: BcryptService,
+  ) {}
 
   public async validateUser(email: string, pass: string): Promise<boolean> {
     const user = await this.userService.readByEmail(email);
     if (user) {
-      const isMatch = await this.comparePasswords(pass, user.password);
+      const isMatch = await this.bcryptService.comparePasswords(
+        pass,
+        user.password,
+      );
       if (isMatch) {
         return true;
       }
@@ -38,9 +32,16 @@ export class AuthService {
     const { email, password } = user;
     const userFound = await this.userService.readByEmail(email);
     if (userFound) {
-      const isMatch = await this.comparePasswords(password, userFound.password);
+      const isMatch = await this.bcryptService.comparePasswords(
+        password,
+        userFound.password,
+      );
       if (isMatch) {
-        const payload = { email: userFound.email, sub: userFound.id };
+        const payload = {
+          email: userFound.email,
+          id: userFound.id,
+          role: userFound.role,
+        };
         return {
           access_token: this.jwtService.sign(payload),
         };
@@ -50,26 +51,17 @@ export class AuthService {
   }
 
   public async register(user: SingUpDto) {
-    const passwordHash = await this.hashPassword(user.password);
-    const newUser = await this.userService.createOne({
-      ...user,
-      password: passwordHash,
+    const data = new CreateUserDto({
+      email: user.email,
+      password: user.password,
+      role: 'user',
     });
+
+    const newUser = await this.userService.createOne(data);
     const payload = { email: newUser.email, sub: newUser.id };
     this.logger.log('User created successfully');
     return {
       access_token: this.jwtService.sign(payload),
     };
-  }
-
-  private hashPassword(password: string): string {
-    return hashSync(password, this.salt);
-  }
-
-  private async comparePasswords(
-    newPassword: string,
-    passwordHash: string,
-  ): Promise<boolean> {
-    return await compare(newPassword, passwordHash);
   }
 }
