@@ -1,3 +1,5 @@
+import { Project } from 'src/project/project.entity';
+import { Timer } from 'src/timer/timer.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,6 +7,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  OneToMany,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity()
@@ -23,6 +27,15 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: ['admin', 'user'], default: 'user' })
   role: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  profile_image_url: string;
+
+  @ManyToMany(() => Project, (project) => project.users)
+  projects: Project[];
+
+  @OneToMany(() => Timer, (timer) => timer.user)
+  timers: Timer[];
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
