@@ -35,7 +35,7 @@ export class UserController {
   @Get('page')
   @ApiQuery({ name: 'page', type: Number, example: 1 })
   @ApiQuery({ name: 'size', type: Number, example: 10 })
-  async readAll(
+  async readPage(
     @Query('page') page: number,
     @Query('size') size: number,
   ): Promise<User[]> {

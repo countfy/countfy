@@ -10,13 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-/*
-PK id uuid  NOT NULL,
-name varchar(255) NOT NULL,
-description varchar(255) NOT NULL,
-created_at timestamp NOT NULL,
-updated_at timestamp NOT NULL
-*/
 
 @Entity()
 export class Project extends BaseEntity {

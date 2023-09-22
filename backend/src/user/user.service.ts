@@ -27,6 +27,7 @@ export class UserService {
   }
 
   public async readPage(page: number, size: number): Promise<User[]> {
+    this.logger.debug(`readPage: page=${page}, size=${size}`);
     return await this.userRepository.find({
       skip: page * size,
       take: size,
@@ -40,6 +41,7 @@ export class UserService {
   }
 
   public async deleteOne(id: string): Promise<User> {
+    this.logger.debug(`deleteOne: id=${id}`);
     const deleted = await this.userRepository.delete(id);
     if (deleted) {
       return deleted.raw;
