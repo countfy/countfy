@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { SeedModule } from './seed/seed.module';
 import { BcryptModule } from './bcrypt/bcrypt.module';
+import { ProjectModule } from './project/project.module';
+import { TimerModule } from './timer/timer.module';
+import { UserProjectModule } from './user-project/user-project.module';
 
 @Module({
   imports: [
@@ -45,6 +48,9 @@ import { BcryptModule } from './bcrypt/bcrypt.module';
     UserModule,
     SeedModule,
     BcryptModule,
+    ProjectModule,
+    TimerModule,
+    UserProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
