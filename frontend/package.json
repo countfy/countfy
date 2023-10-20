@@ -1,19 +1,31 @@
 {
-  "name": "frontend",
+  "name": "rmconsult-frontend-react-template",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
+    "build:dev": "tsc && vite build -m development",
     "preview": "vite preview"
   },
   "dependencies": {
+    "i18next": "^23.6.0",
+    "i18next-browser-languagedetector": "^7.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-i18next": "^13.3.0",
+    "react-router-dom": "^6.17.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.3",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "postcss-import": "^15.1.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
     "vite": "^4.4.5"
   }
 }
