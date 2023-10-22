@@ -6,15 +6,15 @@ import EN from './en/translation.json'
 import PTBR from './pt-BR/translation.json'
 
 const resources = {
-  en: { translation: EN },
-  // 'pt-BR': { translation: PTBR }
+  // en: { translation: EN },
+  'pt-BR': { translation: PTBR }
 }
 
 i18n
   .use(initReactI18next)
   // .use(LanguageDetector)
   .init({
-    lng: 'en',
+    lng: 'pt-BR',
     debug: import.meta.env.MODE === 'development' || false,
     resources,
     returnObjects: true,

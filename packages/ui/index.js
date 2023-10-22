@@ -1,5 +1,7 @@
 import Button from './Button'
+import { Select } from './Select'
 
 export {
-  Button
+  Button,
+  Select
 }

@@ -1,3 +1,5 @@
 {
-  "welcome": "Olá Mundo!"
+  "home": {
+    "hello": "Olá, {{ name }}!"
+  }
 }
