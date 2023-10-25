@@ -1,0 +1,36 @@
+name: PRODUCTION - Build and Deploy via SCP
+
+on:
+  push:
+    branches:
+      - '_main'
+
+env:
+  PROD_TARGET_FOLDER: '/'
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          
+      - name: Install dependencies and build
+        run: |
+          npm ci 
+          npm run build
+
+      - name: Deploy to server via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SCP_HOST }}
+          username: ${{ secrets.SCP_USERNAME }}
+          password: ${{ secrets.SCP_PASSWORD }}
+          source: "build/*"
+          target: ${{ env.PROD_TARGET_FOLDER }}
